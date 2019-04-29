@@ -9,12 +9,21 @@ public class PlanetPhysics : MonoBehaviour
 
     public static List<PlanetPhysics> planets;
     public float startVelocity = 1;
+    public float realDistanceToSun;
+    Vector3 startingPos;
+
+    LineRenderer lr;
+    [Range(1,500)]
+    public int lineSegments = 100;
+
 
     void Start()
     {
+        startingPos = transform.position;
         rb = GetComponent<Rigidbody>();
         rb.velocity = new Vector3(0, 0, startVelocity);
-
+        lr = GetComponent<LineRenderer>();
+        CreateOrbitPath();
     }
 
     void FixedUpdate()
@@ -52,10 +61,27 @@ public class PlanetPhysics : MonoBehaviour
         float forceMagnitude = ((float)gravityConstant*((rb.mass * rbToAttract.mass) / (distance * distance)));
         Vector3 pullForce = direction.normalized * forceMagnitude;
 
-        //// TODO: Implement Sideways Force to generate an actual orbit
-        //Vector3 sidewaysForce =
-        
-
         rbToAttract.AddForce(pullForce);
+    }
+
+    void CreateOrbitPath()
+    {
+        Vector3[] points = new Vector3[lineSegments + 1];
+        for (int i = 0; i < points.Length; i++)
+        {
+            float angle = ((float)i / (float)(lineSegments)) * 360 * Mathf.Deg2Rad;
+            float x = Mathf.Sin(angle) * startingPos.x; // What should this value be?
+            float z = Mathf.Cos(angle) * startingPos.x;
+            points[i] = new Vector3(x, 0f, z);
+        }
+        points[lineSegments] = points[0];
+        lr.positionCount = lineSegments + 1;
+        lr.SetPositions(points);
+    }
+
+    void OnValidate()
+    {
+        if (Application.isPlaying)
+            CreateOrbitPath();
     }
 }

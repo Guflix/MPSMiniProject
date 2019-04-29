@@ -5,13 +5,16 @@ using UnityEngine;
 public class PlanetPhysics : MonoBehaviour
 {
     [HideInInspector] public Rigidbody rb;
-    const double gravityConstant = 667.408; //0.0000000000667408; // Newtonian gravitational constant https://simple.wikipedia.org/wiki/Gravitational_constant
+    const double gravityConstant = 0.3; //0.667408; //0.0000000000667408; // Newtonian gravitational constant https://simple.wikipedia.org/wiki/Gravitational_constant
 
     public static List<PlanetPhysics> planets;
+    public float startVelocity = 1;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        rb.velocity = new Vector3(0, 0, startVelocity);
+
     }
 
     void FixedUpdate()
@@ -51,6 +54,7 @@ public class PlanetPhysics : MonoBehaviour
 
         //// TODO: Implement Sideways Force to generate an actual orbit
         //Vector3 sidewaysForce =
+        
 
         rbToAttract.AddForce(pullForce);
     }

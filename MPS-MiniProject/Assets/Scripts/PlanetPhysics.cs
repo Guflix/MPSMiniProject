@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlanetPhysics : MonoBehaviour
 {
     [HideInInspector] public Rigidbody rb;
-    const double gravityConstant = 0.3; //0.667408; //0.0000000000667408; // Newtonian gravitational constant https://simple.wikipedia.org/wiki/Gravitational_constant
+    const double gravityConstant = 0.0000000000667408; // Newtonian gravitational constant https://simple.wikipedia.org/wiki/Gravitational_constant
+    // 0.3;
 
     public static List<PlanetPhysics> planets;
     public float startVelocity = 1;
@@ -21,7 +22,7 @@ public class PlanetPhysics : MonoBehaviour
     {
         startingPos = transform.position;
         rb = GetComponent<Rigidbody>();
-        rb.velocity = new Vector3(0, 0, startVelocity);
+        //rb.velocity = new Vector3(0, 0, startVelocity);
         lr = GetComponent<LineRenderer>();
         CreateOrbitPath();
     }
@@ -61,6 +62,8 @@ public class PlanetPhysics : MonoBehaviour
         float forceMagnitude = ((float)gravityConstant*((rb.mass * rbToAttract.mass) / (distance * distance)));
         Vector3 pullForce = direction.normalized * forceMagnitude;
 
+        rbToAttract.AddForce(rbToAttract.transform.forward, ForceMode.Acceleration);
+
         rbToAttract.AddForce(pullForce);
     }
 
@@ -79,9 +82,9 @@ public class PlanetPhysics : MonoBehaviour
         lr.SetPositions(points);
     }
 
-    void OnValidate()
-    {
-        if (Application.isPlaying)
-            CreateOrbitPath();
-    }
+    //void OnValidate()
+    //{
+    //    if (Application.isPlaying)
+    //        CreateOrbitPath();
+    //}
 }

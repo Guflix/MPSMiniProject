@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlanetAxisRotation : MonoBehaviour
 {
     public float daysSpentRotating;
-    public float speed = 1;
+    float speed = 1;
 
     void Update()
     {

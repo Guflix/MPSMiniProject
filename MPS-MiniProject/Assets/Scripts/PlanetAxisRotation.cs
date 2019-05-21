@@ -6,7 +6,7 @@ public class PlanetAxisRotation : MonoBehaviour
 {
 
     public float daysSpentRotating;
-    public float speed = 1;
+    float speed = 1;
 
 
     // Update is called once per frame
